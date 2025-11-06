@@ -28,5 +28,5 @@ jobs:
 
     - name: Push the Docker image
       run: |
-        docker tag nikhildhole:${VERSION} ${{ secrets.DOCKERHUB_USERNAME }}/nikhildhole:${VERSION}
+        docker tag nikhildhole:${VERSION} ${{ secrets.DOCKERHUB_USERNAME }}/task-tracker-back-end:${VERSION}
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/nikhildhole:${VERSION}
