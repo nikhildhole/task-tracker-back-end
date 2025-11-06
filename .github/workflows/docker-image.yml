@@ -2,8 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    tags:
-      - 'v*' # triggers on version tags like v1.0.0
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -12,8 +13,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Extract version from tag
-      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+    - name: Set version
+      id: version
+      run: echo "VERSION=1.0.0" >> $GITHUB_ENV
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag nikhildhole:${VERSION}
+
+    - name: Push the Docker image
+      run: |
+        docker tag nikhildhole:${VERSION} ${{ secrets.DOCKERHUB_USERNAME }}/nikhildhole:${VERSION}
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/nikhildhole:${VERSION}
