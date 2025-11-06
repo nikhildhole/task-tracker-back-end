@@ -24,7 +24,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag nikhildhole:${VERSION}
+      run: docker build . --file Dockerfile --tag task-tracker-back-end:${VERSION}
 
     - name: Push the Docker image
       run: |
